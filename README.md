@@ -9,3 +9,4 @@ type of log on, status and log-on time.
     Status: If local log-on then if the computer is locked/unlocked
     Log-on Time: The time the user logged-on. (local only)
  
+Working on adding logon times for remote users logged-on. 
