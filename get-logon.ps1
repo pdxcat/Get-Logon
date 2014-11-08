@@ -6,15 +6,18 @@
     Checks if anyone is logged on to the computer. The only input required is a computer name. 
     It outputs in a table format (User Name, Log-in Type, Status and Logon Time).
 
+    .Parameter CompName
+    The name of the computer you are checking. Takes FQDN or shorthand.
+
     .Example
     get-logon.ps1 smiley
-    This will output everyone that is logged on to the computer name.  
+    This will output everyone that is logged on to the computer name.
 #>
 
 param([string]$CompName)
 
 ## This retrieves who is logged into a computer both locally and remotely. 
-## Uses qwinsta to retrieves the informatin and then converts the informaiton into a object. 
+## Uses qwinsta to retrieves the information and then converts the information into a object. 
 ## inputs: none
 ## outputs: list of users (object)
 function get-users{
@@ -45,7 +48,7 @@ function get-users{
     return $newlist
 }
 
-## This retrieves what time the user loggedon to the computer. It only checks for local log-ins. 
+## This retrieves what time the user logged on to the computer. It only checks for local logins. 
 ## Input: username (string)
 ## Outputs: data and (single string)
 function get-logontime{ 
@@ -100,7 +103,7 @@ function check-locked{
     }
 }
 
-## This Manages the creatation of the list of users log-on. Also adds information: logon time, 
+## This Manages the creation of the list of users log-on. Also adds information: logon time, 
 ## status. 
 ## Input: none
 ## Output: list of users (object)
