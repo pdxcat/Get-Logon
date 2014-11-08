@@ -4,17 +4,20 @@
     
     .Description
     Checks if anyone is logged on to the computer. The only input required is a computer name. 
-    It outputs in a table format (User Name, Log-in Type, Status and Logon Time).
+    It outputs in a table format (User Name, Login Type, Status and Logon Time).
+
+    .Parameter CompName
+    The name of the computer you are checking. Takes FQDN or shorthand.
 
     .Example
     get-logon.ps1 smiley
-    This will output everyone that is logged on to the computer name.  
+    This will output everyone that is logged on to the computer name.
 #>
 
 param([string]$CompName)
 
-## This retrieves who is logged into a computer both locally and remotely. 
-## Uses qwinsta to retrieves the informatin and then converts the informaiton into a object. 
+## This retrieves who is logged on to a computer both locally and remotely. 
+## Uses qwinsta to retrieve the information and then converts the information into a object. 
 ## inputs: none
 ## outputs: list of users (object)
 function get-users{
@@ -45,20 +48,20 @@ function get-users{
     return $newlist
 }
 
-## This retrieves what time the user loggedon to the computer. It only checks for local log-ins. 
+## This retrieves what time the user logged on to the computer. It only checks for local logins. 
 ## Input: username (string)
 ## Outputs: data and (single string)
 function get-logontime{ 
     
     param($UserName)
 
-    ## This retrieves the list of loggon sessions. 
+    ## This retrieves the list of logon sessions. 
     $SessionList = (GWMI Win32_LogonSession -ComputerName $CompName) | where {$_.logontype -eq "2"}
     
     ## This retrieves the user information used to match the ID. 
     $UserList = (GWMI Win32_loggedonuser -ComputerName $CompName)
     
-    ## Used to store logonids that match  
+    ## Used to store logonID that match  
     $Idlist =@()
     
     ## Matches the username and retrieves the logonID.
@@ -73,7 +76,7 @@ function get-logontime{
     }
     
     $time=$null
-    ## Matches the Logon Id and retrieves the date and formats the date.
+    ## Matches the logonID and retrieves the date and formats the date.
     foreach($LogonId in $Idlist){
         foreach($session in $SessionList){
             if($session.logonid -eq $LogonId ){
@@ -100,7 +103,7 @@ function check-locked{
     }
 }
 
-## This Manages the creatation of the list of users log-on. Also adds information: logon time, 
+## This manages the creation of the list of users logged on. Also adds information: logon time, 
 ## status. 
 ## Input: none
 ## Output: list of users (object)
